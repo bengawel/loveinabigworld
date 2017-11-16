@@ -1,11 +1,23 @@
+
 "use strict";
 
 import React, { Component } from 'react';
-import { render } from 'react-dom';
+import { render } 			from 'react-dom';
+import { BrowserRouter, Route, Redirect} from 'react-router-dom';
+import Landing				from './components/landing';
+import './app.css'
+
+
+
 
 class App extends Component {
-    render () {
-        return <p> Love is a Big World Demo </p>;
+    render() {
+        return <BrowserRouter>
+			<div>
+				<Route exact path="/" component={Landing}/>
+			</div>
+		</BrowserRouter>;
+
     }
 }
 

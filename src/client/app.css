@@ -1,0 +1,40 @@
+.container-fluid  {
+	width: 100vh;
+	height: 100vw;
+}
+
+body {
+	font-family: Verdana, Geneva, sans-serif;
+}
+
+header {
+	height: 10%;
+}
+
+nav {
+	background-color: #FF00DD;
+	overflow: hidden;
+	padding: 1em;
+	width: 100%;
+	font-weight: bold;
+}
+
+nav a {
+	color: #FFF;
+	text-decoration: none;
+	display: inline-block;
+	padding: 0 2em;
+}
+
+nav a:visited {
+	color: #FFF;
+}
+
+nav navbar {
+	display: none;
+	margin: 0 auto;
+}
+
+nav navDiv {
+	text-align: center;
+}
