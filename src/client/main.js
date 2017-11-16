@@ -5,7 +5,7 @@ import { render } from 'react-dom';
 
 class App extends Component {
     render () {
-        return <p> Hello React project</p>;
+        return <p> Love is a Big World Demo </p>;
     }
 }
 
