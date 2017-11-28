@@ -43,13 +43,13 @@ class Profile extends Component {
                 <p id="errorMsg" className="bg-danger"/>
             </div>
             <div className="col-xs-2">
-                <h4>Player Profile</h4>
+                <h4 style={{margin: 0}}><b>User Information</b></h4>
                 { isUser ? <Link to={`/profile/${this.props.match.params.username}/edit`}>Edit Profile</Link> : undefined }
             </div>
             <div className="col-xs-8">
                 <div className="row">
                     <div className="col-xs-11">
-                        <div className="col-xs-6 text-right">
+                        <div className="col-xs-3 text-right">
                             <p><b>Username:</b></p>
                             <p><b>Real Name:</b></p>
                             <p><b>Nick Name:</b></p>

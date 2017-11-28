@@ -27,7 +27,8 @@ let User = new Schema({
     'city':         {type: String, default: ''},
     'phone_number': {type: String, default: ''},
     'hash':         {type: String, required: true},
-    'salt':         {type: String, required: true}
+    'salt':         {type: String, required: true},
+    'goals':        {type: Schema.Types.ObjectId, ref: 'GoalList'}
 });
 
 User.path('username').validate(function(value) {

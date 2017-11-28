@@ -18,6 +18,14 @@ class Header extends Component {
 				<Link to="/login">Log In</Link>
 				<Link to="/register">Register</Link>
 			</div>;
+		const left = user.username!== '' ?
+			<div>
+				<Link to ="#">MyFriends</Link>
+				<Link to="#">MyGives</Link>
+				<Link to="#">MyGoals</Link>
+				<Link to="#">MyLife</Link>
+			</div>:
+			<div></div>;
         return (
 			<div className="header">
 				<nav className="navbar navbar-default navbar-static-top">
@@ -25,10 +33,7 @@ class Header extends Component {
 						<h2>Love is a Big World!</h2>
 					</div>
 					<div className="col-xs-8">
-						<Link to ="#">MyFriends</Link>
-						<Link to="#">MyGives</Link>
-						<Link to="#">MyGoals</Link>
-						<Link to="#">MyLife</Link>
+						{left}
 					</div>
 					{right}
 				</nav>
