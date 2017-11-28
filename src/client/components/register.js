@@ -54,6 +54,7 @@ class Register extends Component {
             data: data
         })
             .then(() => {
+                console.log('success');
                 this.props.history.push('/login');
             })
             .fail(err => {

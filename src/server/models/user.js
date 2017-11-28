@@ -25,8 +25,9 @@ let User = new Schema({
     'dob':          {type: String, default: '' },
     'gender':       {type: String, default: ''},
     'city':         {type: String, default: ''},
-    'email':        {type: String, default: ''},
-    'phone_number': {type: String, default: ''}
+    'phone_number': {type: String, default: ''},
+    'hash':         {type: String, required: true},
+    'salt':         {type: String, required: true}
 });
 
 User.path('username').validate(function(value) {
@@ -57,8 +58,8 @@ User.pre('save', function(next) {
     this.nick_name      = this.nick_name.replace(/<(?:.|\n)*?>/gm, '');
     this.gender         = this.gender.replace(/<(?:.|\n)*?>/gm, '');
     this.city           = this.city.replace(/<(?:.|\n)*?>/gm, '');
-    this.email          = this.email.replace(/<(?:.|\n)*?>/gm, '');
     this.phone_number   = this.phone_number.replace(/<(?:.|\n)*?>/gm, '');
+    next();
 });
 
 module.exports = mongoose.model('User', User);

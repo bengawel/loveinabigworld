@@ -47,6 +47,7 @@ mongoose.connect('mongodb://192.168.99.100:32768/lbw', options)
         };
 
         // Import our API Routes
+        require('./api/v1/user')(app);
         require('./api/v1/session')(app);
 
         // Give them the SPA base page

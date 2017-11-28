@@ -6,6 +6,7 @@ import { render } 			from 'react-dom';
 import { BrowserRouter, Route, Redirect} from 'react-router-dom';
 import Landing				from './components/landing';
 import Login				from './components/login';
+import Logout               from './components/logout';
 import Header				from './components/header';
 import Register				from './components/register';
 import './app.css'
@@ -36,6 +37,7 @@ class App extends Component {
 						<Redirect to={`/profile/${this.user.username()}`}/> :
 						<Register/>;
                 }}/>
+                <Route path="/logout" render={props => <Logout user={this.user}/>}/>
 			</div>
 		</BrowserRouter>;
 
