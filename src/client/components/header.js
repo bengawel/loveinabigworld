@@ -10,6 +10,7 @@ class Header extends Component {
 	}
     render() {
 		const user = this.props.user.getUser();
+		const profile_link = `/profile/${user.username}`;
 		const right = user.username !== '' ?
 			<div className="header">
 				<Link to="/logout">Log Out</Link>
@@ -20,9 +21,10 @@ class Header extends Component {
 			</div>;
 		const left = user.username!== '' ?
 			<div>
+				<Link to ={profile_link}>MyProfile</Link>
 				<Link to ="#">MyFriends</Link>
 				<Link to="#">MyGives</Link>
-				<Link to="#">MyGoals</Link>
+				<Link to="/mygoals">MyGoals</Link>
 				<Link to="#">MyLife</Link>
 			</div>:
 			<div></div>;

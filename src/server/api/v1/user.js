@@ -81,7 +81,7 @@ module.exports = (app) => {
                 user => {
                     if (!user) res.status(404).send({ error: `unknown user: ${req.params.username}` });
                     else {
-                        // Filter games data for only profile related info
+
                         res.status(200).send({
                             username:       user.username,
                             primary_email:  user.primary_email,
@@ -90,8 +90,7 @@ module.exports = (app) => {
                             city:           user.city,
                             phone_number:   user.phone_number,
                             dob:            user.dob,
-                            gender:         user.gender
-
+                            gender:         user.gender,
                         });
                     }
                 }, err => {

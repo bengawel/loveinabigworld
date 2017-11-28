@@ -43,7 +43,8 @@ mongoose.connect('mongodb://192.168.99.100:32768/lbw', options)
 
         // Import our Data 
         app.models = {
-            User: require('./models/user')
+            User: require('./models/user'),
+            GoalList: require('./models/goals')
         };
 
         // Import our API Routes
