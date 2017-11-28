@@ -106,8 +106,8 @@ module.exports = (app) => {
             res.status(401).send({ error: 'unauthorized' });
         } else {
             let schema = Joi.object().keys({
-                first_name: Joi.string().allow(''),
-                last_name: Joi.string().allow(''),
+                real_name: Joi.string().allow(''),
+                nick_name: Joi.string().allow(''),
                 city: Joi.string().allow(''),
                 phone_number: Joi.string().allow(''),
                 gender:   Joi.string().allow(''),
@@ -119,12 +119,19 @@ module.exports = (app) => {
                     console.log(`User.update validation failure: ${message}`);
                     res.status(400).send({error: message});
                 } else {
+                    if (data.real_name === '') delete data.real_name;
+                    if (data.nick_name === '') delete data.nick_name;
+                    if (data.city === '') delete data.city;
+                    if (data.phone_number === '') delete data.phone_number;
+                    if (data.gender === '') delete data.gender;
+                    if (data.dob === '') delete data.dob;
                     const query = { username: req.session.user.username };
                     app.models.User.findOneAndUpdate(query, {$set: data}, {new: true})
                         .then(
                             user => {
                                 req.session.user = user;
-                                res.status(204).end();
+                                console.log(user.username);
+                                res.status(204).send({username: user.username});
                             }, err => {
                                 console.log(`User.update logged-in user not found: ${req.session.user.id}`);
                                 res.status(500).end();

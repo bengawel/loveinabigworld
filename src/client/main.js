@@ -10,6 +10,7 @@ import Logout               from './components/logout';
 import Header				from './components/header';
 import Register				from './components/register';
 import Profile              from './components/profile';
+import Edit                 from './components/edit';
 import './app.css'
 
 
@@ -39,7 +40,8 @@ class App extends Component {
 						<Register/>;
                 }}/>
                 <Route path="/logout" render={props => <Logout user={this.user}/>}/>
-                <Route path="/profile/:username" render={props => <Profile user={this.user}/>}/>
+                <Route exact path="/profile/:username" render={props => <Profile user={this.user}/>}/>
+                <Route path="/profile/:username/edit" render={props => <Edit user={this.user}/>}/>
 			</div>
 		</BrowserRouter>;
 
