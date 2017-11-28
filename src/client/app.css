@@ -1,6 +1,17 @@
-.container-fluid  {
-	width: 100vh;
-	height: 100vw;
+.navbar-static-top {
+	margin-left: -14px;
+	margin-right: -24px;
+	background-color: #FF00DD;
+}
+
+.right-nav {
+	text-align: right;
+	padding-top: 10px;
+	padding-right: 20px;
+}
+
+.right-nav a {
+	display: block;
 }
 
 body {
@@ -28,13 +39,4 @@ nav a {
 
 nav a:visited {
 	color: #FFF;
-}
-
-nav navbar {
-	display: none;
-	margin: 0 auto;
-}
-
-nav navDiv {
-	text-align: center;
 }

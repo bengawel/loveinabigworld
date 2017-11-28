@@ -41,10 +41,12 @@ mongoose.connect('mongodb://192.168.99.100:32768/lbw', options)
     .then(() => {
         console.log('\t MongoDB connected');
 
-        //Import data models
+        // Import our Data Models
 
-        //Import API Routes
+        // Import our API Routes
+        require('./api/v1/session')(app);
 
+        // Give them the SPA base page
         app.get('*', (req, res) => {
             let preloadedState = req.session.user ? {
                 username: req.session.user.username,
