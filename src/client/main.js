@@ -6,6 +6,8 @@ import { render } 			from 'react-dom';
 import { BrowserRouter, Route, Redirect} from 'react-router-dom';
 import Landing				from './components/landing';
 import Login				from './components/login';
+import Header				from './components/header';
+import Register				from './components/register';
 import './app.css'
 
 
@@ -22,11 +24,17 @@ class App extends Component {
     render() {
         return <BrowserRouter>
 			<div>
+				<Header user={this.user}/>
 				<Route exact path="/" component={Landing}/>
 				<Route path="/login" render={() => {
 					return this.user.loggedIn() ?
 						<Redirect to={`/profile/${this.user.username()}`}/> :
 						<Login user={this.user}/>;
+                }}/>
+				<Route path="/register" render={() => {
+                    return this.user.loggedIn() ?
+						<Redirect to={`/profile/${this.user.username()}`}/> :
+						<Register/>;
                 }}/>
 			</div>
 		</BrowserRouter>;

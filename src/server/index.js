@@ -41,7 +41,10 @@ mongoose.connect('mongodb://192.168.99.100:32768/lbw', options)
     .then(() => {
         console.log('\t MongoDB connected');
 
-        // Import our Data Models
+        // Import our Data 
+        app.models = {
+            User: require('./models/user')
+        };
 
         // Import our API Routes
         require('./api/v1/session')(app);

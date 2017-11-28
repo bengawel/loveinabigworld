@@ -9,7 +9,15 @@ class Header extends Component {
 		super(props);
 	}
     render() {
-		const img_source = '/public/images/lbw.png';
+		const user = this.props.user.getUser();
+		const right = user.username !== '' ?
+			<div className="header">
+				<Link to="/logout">Log Out</Link>
+			</div>:
+			<div className="col-xs-4 right-nav">
+				<Link to="/login">Log In</Link>
+				<Link to="/register">Register</Link>
+			</div>;
         return (
 			<div className="header">
 				<nav className="navbar navbar-default navbar-static-top">
@@ -22,9 +30,7 @@ class Header extends Component {
 						<Link to="#">MyGoals</Link>
 						<Link to="#">MyLife</Link>
 					</div>
-					<div className="col-xs-4 right-nav">
-						<Link to="/login">Log In</Link>
-					</div>
+					{right}
 				</nav>
 			</div>
         );
