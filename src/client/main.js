@@ -9,6 +9,7 @@ import Login				from './components/login';
 import Logout               from './components/logout';
 import Header				from './components/header';
 import Register				from './components/register';
+import Profile              from './components/profile';
 import './app.css'
 
 
@@ -38,6 +39,7 @@ class App extends Component {
 						<Register/>;
                 }}/>
                 <Route path="/logout" render={props => <Logout user={this.user}/>}/>
+                <Route path="/profile/:username" render={props => <Profile user={this.user}/>}/>
 			</div>
 		</BrowserRouter>;
 

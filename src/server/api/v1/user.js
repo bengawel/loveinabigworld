@@ -75,37 +75,63 @@ module.exports = (app) => {
         });
     });
 
-    // app.put('/v1/user', (req, res) => {
-    //     if (!req.session.user) {
-    //         res.status(401).send({ error: 'unauthorized' });
-    //     } else {
-    //         let schema = Joi.object().keys({
-    //             first_name: Joi.string().allow(''),
-    //             last_name: Joi.string().allow(''),
-    //             city: Joi.string().allow(''),
-    //             phone_number: Joi.string().allow(''),
-    //             gender:   Joi.string().allow(''),
-    //             dob:      Joi.string().allow('')
-    //         });
-    //         Joi.validate(req.body, schema, {stripUnknown: true}, (err, data) => {
-    //             if (err) {
-    //                 const message = err.details[0].message;
-    //                 console.log(`User.update validation failure: ${message}`);
-    //                 res.status(400).send({error: message});
-    //             } else {
-    //                 const query = { username: req.session.user.username };
-    //                 app.models.User.findOneAndUpdate(query, {$set: data}, {new: true})
-    //                     .then(
-    //                         user => {
-    //                             req.session.user = user;
-    //                             res.status(204).end();
-    //                         }, err => {
-    //                             console.log(`User.update logged-in user not found: ${req.session.user.id}`);
-    //                             res.status(500).end();
-    //                         }
-    //                     );
-    //             }
-    //         });
-    //     }
-    // });
+    app.get('/v1/user/:username', (req, res) => {
+        app.models.User.findOne({ username: req.params.username.toLowerCase() })
+            .then(
+                user => {
+                    if (!user) res.status(404).send({ error: `unknown user: ${req.params.username}` });
+                    else {
+                        // Filter games data for only profile related info
+                        res.status(200).send({
+                            username:       user.username,
+                            primary_email:  user.primary_email,
+                            real_name:     user.real_name,
+                            nick_name:      user.nick_name,
+                            city:           user.city,
+                            phone_number:   user.phone_number,
+                            dob:            user.dob,
+                            gender:         user.gender
+
+                        });
+                    }
+                }, err => {
+                    console.log(err);
+                    res.status(500).send({ error: 'server error' });
+                }
+            );
+    });
+
+    app.put('/v1/user', (req, res) => {
+        if (!req.session.user) {
+            res.status(401).send({ error: 'unauthorized' });
+        } else {
+            let schema = Joi.object().keys({
+                first_name: Joi.string().allow(''),
+                last_name: Joi.string().allow(''),
+                city: Joi.string().allow(''),
+                phone_number: Joi.string().allow(''),
+                gender:   Joi.string().allow(''),
+                dob:      Joi.string().allow('')
+            });
+            Joi.validate(req.body, schema, {stripUnknown: true}, (err, data) => {
+                if (err) {
+                    const message = err.details[0].message;
+                    console.log(`User.update validation failure: ${message}`);
+                    res.status(400).send({error: message});
+                } else {
+                    const query = { username: req.session.user.username };
+                    app.models.User.findOneAndUpdate(query, {$set: data}, {new: true})
+                        .then(
+                            user => {
+                                req.session.user = user;
+                                res.status(204).end();
+                            }, err => {
+                                console.log(`User.update logged-in user not found: ${req.session.user.id}`);
+                                res.status(500).end();
+                            }
+                        );
+                }
+            });
+        }
+    });
 };
