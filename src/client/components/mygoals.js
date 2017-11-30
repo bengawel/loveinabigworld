@@ -15,9 +15,8 @@ class MyGoals extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: {
-                goals: []
-            }
+            goals: [],
+            current_goal: ''
         }
     }
 
@@ -27,22 +26,29 @@ class MyGoals extends Component {
             method: "get"
         })
             .then(data => {
-                this.setState({user:data});
+                this.setState({goals:data.goals});
+                console.log(data);
+
             })
             .fail(err => {
                 let errorEl = document.getElementById('errorMsg');
-                errorEl.innerHTML = `Error: ${err.error}`;
+                errorEl.innerHTML = `${err.responseJSON.error}`;
             });
     }
 
     render() {
-        let goals = this.state.user.goals.map((goal, index) => (
+        console.log(this.state);
+        let goals = this.state.goals.map((goal, index) => (
             <Goal key={index} goal={goal} index={index}/>
         ));
         const user = this.props.user.getUser();
         const page_html = user.username !== '' ?
             <div>
+                <Link to="/goal">Create new goal!</Link>
                 <div className="row">
+                    <div className="center-block">
+                        <p id="errorMsg" className="bg-danger"/>
+                    </div>
                     <div className="col-xs-4">
                         <h4><b>My Goals:</b></h4>
                         <div className ="row">

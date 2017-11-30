@@ -44,12 +44,13 @@ mongoose.connect('mongodb://192.168.99.100:32768/lbw', options)
         // Import our Data 
         app.models = {
             User: require('./models/user'),
-            GoalList: require('./models/goals')
+            Goal: require('./models/goals')
         };
 
         // Import our API Routes
         require('./api/v1/user')(app);
         require('./api/v1/session')(app);
+        require('./api/v1/goals')(app);
 
         // Give them the SPA base page
         app.get('*', (req, res) => {
