@@ -42,6 +42,7 @@ class MyGoals extends Component {
         const user = this.props.user.getUser();
         const page_html = user.username !== '' ?
             <div>
+				<p id="errorMsg" className="bg-danger"/>
                 <div className="row">
                     <div className="col-xs-4">
                         <h4><b>My Goals:</b></h4>

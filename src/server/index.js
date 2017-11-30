@@ -44,12 +44,15 @@ mongoose.connect('mongodb://192.168.99.100:32768/lbw', options)
         // Import our Data 
         app.models = {
             User: require('./models/user'),
-            GoalList: require('./models/goals')
+            GoalList: require('./models/goals'),
+			Post: require('./models/posts')
         };
 
         // Import our API Routes
         require('./api/v1/user')(app);
         require('./api/v1/session')(app);
+		require('./api/v1/goals')(app);
+		require('./api/v1/posts')(app);
 
         // Give them the SPA base page
         app.get('*', (req, res) => {
@@ -68,5 +71,5 @@ mongoose.connect('mongodb://192.168.99.100:32768/lbw', options)
 
 
 let server = app.listen(port, () => {
-    console.log('Love Is A Big World app listening on ' + server.address().port);
+    console.log('Love In A Big World app listening on ' + server.address().port);
 });

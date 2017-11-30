@@ -25,7 +25,7 @@ class Header extends Component {
 				<Link to ="#">MyFriends</Link>
 				<Link to="#">MyGives</Link>
 				<Link to="/mygoals">MyGoals</Link>
-				<Link to="#">MyLife</Link>
+				<Link to="/mylife">MyLife</Link>
 			</div>:
 			<div></div>;
         return (
