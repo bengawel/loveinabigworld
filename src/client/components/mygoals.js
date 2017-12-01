@@ -5,7 +5,7 @@ import { Link, withRouter }           from 'react-router-dom';
 
 
 const Goal = ({goal, index}) => {
-    const url = `/goal/${goal.id}`;
+    const url = `/goal/${goal._id}`;
     return <tr key={index}>
         <th><Link to={url}>{goal.title}</Link></th>
     </tr>;
@@ -27,8 +27,16 @@ class MyGoals extends Component {
         })
             .then(data => {
                 this.setState({goals:data.goals});
-                console.log(data);
-
+                let current_state;
+                data.goals.forEach(function(goal) {
+                    if (goal.current === true) {
+                        current_state = {current_goal: goal};
+                    }
+                });
+                if (current_state !== undefined) {
+                    this.setState(current_state);
+                }
+                console.log(this.state.current_goal);
             })
             .fail(err => {
                 let errorEl = document.getElementById('errorMsg');
@@ -37,10 +45,10 @@ class MyGoals extends Component {
     }
 
     render() {
-        console.log(this.state);
         let goals = this.state.goals.map((goal, index) => (
             <Goal key={index} goal={goal} index={index}/>
         ));
+        const url = `/goal/${this.state.current_goal._id}`;
         const user = this.props.user.getUser();
         const page_html = user.username !== '' ?
             <div>
@@ -49,21 +57,22 @@ class MyGoals extends Component {
                     <div className="center-block">
                         <p id="errorMsg" className="bg-danger"/>
                     </div>
-                    <div className="col-xs-4">
+                    <div className="col-xs-3">
                         <h4><b>My Goals:</b></h4>
                         <div className ="row">
-                            <table id="goalsTable" className="col-xs-2 table">
-                                <thead>
-                                    <tr>
-                                        <th>Goal</th>
-                                    </tr>
-                                </thead>
+                            <table id="goalsTable" className="col-xs-1 table">
                                 <tbody>{goals}</tbody>
                             </table>
                         </div>
                     </div>
+                    <div className="col-xs-1"/>
                     <div className="col-xs-4">
                         <h4><b>My Current Goal:</b></h4>
+                        <div className="row">
+                            <div className="col-xs-2">
+                                <Link to={url}>{this.state.current_goal.title}</Link>
+                            </div>
+                        </div>
                     </div>
                     <div className="col-xs-4">
                         <h4><b>My Current Goal Progress:</b></h4>

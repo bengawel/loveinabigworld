@@ -33,21 +33,44 @@ module.exports = (app) => {
                                         current:    data.current
                                     };
                                     let goal = new app.models.Goal(newGoal);
-                                    user.goals.push(goal);
-                                    user.save(err => {
+                                    goal.save(err => {
                                         if (err) {
-                                            console.log(`Goal.put save failure: ${err} ${goal}`);
-                                            res.status(400).send({error: 'failure saving goal'});
+                                            console.log(`Goal.create save failure: ${err}`);
+                                            res.status(400).send({error: 'failure creating goal'});
                                         } else {
-                                            res.status(201).end();
+                                            const query = { $push: { goals: goal._id}};
+                                            app.models.User.findOneAndUpdate({_id: req.session.user._id}, query, () => {
+                                                res.status(201).send({
+                                                    id: goal._id
+                                                });
+                                            });
                                         }
-                                    })
+                                    });
                                 }
-                            })
+                            });
                         }
                     }
                 )
+        }
+    });
 
+    app.get('/v1/goals/mygoal/:goalid', (req, res) => {
+        if (!req.session.user) {
+            res.status(401).send({ error: 'unauthorized'});
+        } else {
+            app.models.Goal.findById(req.params.goalid)
+                .then(
+                    goal => {
+                        if (!goal) {
+                            res.status(404).send({error: `unknown goal: ${req.params.id}`});
+                        } else {
+                            res.status(200).send({goal: goal})
+                        }
+                    }, err => {
+                        console.log(`Goal.get failure: ${err}`);
+                        res.status(404).send({error: `unknown goal: ${req.params.id}`});
+                    }
+                )
         }
     });
 
@@ -59,8 +82,6 @@ module.exports = (app) => {
                 user => {
                     if (!user) res.status(404).send({ error: `User does not exist` });
                     else {
-                        console.log(user);
-                        console.log(user.goals);
                         res.status(200).send({
                             goals:          user.goals
                         });
@@ -71,4 +92,48 @@ module.exports = (app) => {
                 }
             );
     });
+
+    //TODO: in the query finding current goals, add an and to make it per user, right now gets rid of all current
+    app.put('/v1/goals/current/:goalid', (req, res) => {
+        app.models.Goal.find({current: true})
+            .then(
+                results => {
+                    if (results) {
+                        results.forEach(function(goal) {
+                            goal.current = false;
+                            goal.save(err => {
+                                if (err) {
+                                    console.log(`Goal.put current save failure: ${err}`);
+                                    res.status(400).send({error: 'failure saving current goal'});
+                                }
+                            })
+                        });
+                    }
+                    app.models.Goal.findById(req.params.goalid)
+                        .then(
+                            goal => {
+                                if (!goal) {
+                                    res.status(404).send({error: `unknown goal: ${req.params.id}`});
+                                } else {
+                                    goal.current = true;
+                                    goal.save(err => {
+                                        if (err) {
+                                            console.log(`Goal.put current save failure: ${err}`);
+                                            res.status(400).send({error: 'failure saving current goal'});
+                                        } else {
+                                            res.status(201).end();
+                                        }
+                                    })
+                                }
+                            }, err => {
+                                console.log(err);
+                                res.status(500).send({ error: 'server error' });
+                            }
+                        )
+                }, err => {
+                    console.log(err);
+                    res.status(500).send({ error: 'server error' });
+                }
+            )
+    })
 };
