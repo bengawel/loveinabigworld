@@ -36,8 +36,8 @@ let options = {
     useMongoClient: true
 };
 
-mongoose.connect('mongodb://192.168.99.100:32768/lbw', options)
-//mongoose.connect('mongodb://127.0.0.1:27017', options)
+//mongoose.connect('mongodb://192.168.99.100:32768/lbw', options)
+mongoose.connect('mongodb://127.0.0.1:27017', options)
     .then(() => {
         console.log('\t MongoDB connected');
 
@@ -45,7 +45,8 @@ mongoose.connect('mongodb://192.168.99.100:32768/lbw', options)
         app.models = {
             User: require('./models/user'),
             GoalList: require('./models/goals'),
-			Post: require('./models/posts')
+			Post: require('./models/posts'),
+			Stat: require('./models/statuses'),
         };
 
         // Import our API Routes
@@ -53,6 +54,7 @@ mongoose.connect('mongodb://192.168.99.100:32768/lbw', options)
         require('./api/v1/session')(app);
 		require('./api/v1/goals')(app);
 		require('./api/v1/posts')(app);
+		require('./api/v1/statuses')(app);
 
         // Give them the SPA base page
         app.get('*', (req, res) => {

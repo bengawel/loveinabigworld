@@ -22,7 +22,7 @@ class Header extends Component {
 		const left = user.username!== '' ?
 			<div>
 				<Link to ={profile_link}>MyProfile</Link>
-				<Link to ="#">MyFriends</Link>
+				<Link to ="/myfriends">MyFriends</Link>
 				<Link to="#">MyGives</Link>
 				<Link to="/mygoals">MyGoals</Link>
 				<Link to="/mylife">MyLife</Link>
@@ -32,7 +32,7 @@ class Header extends Component {
 			<div className="header">
 				<nav className="navbar navbar-default navbar-static-top">
 					<div>
-						<h2>Love is a Big World!</h2>
+						<h2>Love in a Big World!</h2>
 					</div>
 					<div className="col-xs-8">
 						{left}

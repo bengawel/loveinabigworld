@@ -46,6 +46,8 @@ class MyLife extends Component {
             .then(data => {
                 //console.log("posted");
 				this.setState({posts: this.state.posts.concat([data.post])}); // update w response
+				document.getElementById('title').value = "";	// empty input boxes
+				document.getElementById('content').value = "";
             })
             .fail(err => {
                 let errorEl = document.getElementById('errorMsg');
@@ -80,8 +82,7 @@ class MyLife extends Component {
         })
             .then(data => {
                 this.setState({posts: data.posts});
-				//console.log("got posts @ start");
-				//console.log(data.posts);
+
             })
             .fail(err => {
                 let errorEl = document.getElementById('errorMsg');
@@ -96,9 +97,15 @@ class MyLife extends Component {
         const user = this.props.user.getUser();
         const page_html = user.username !== '' ?
             <div>
-				<input className="form-control" id="title" type="text" placeholder="Post Title"/>
-				<input className="form-control" id="content" type="text" placeholder="Post Content"/>
-				<button onClick={this.createPost}>Make Post</button>
+				<div className="form-group">
+					<label>Post Title</label>
+					<input className="form-control" id="title" type="text"/>
+				</div>
+				<div className="form-group">
+					<label>Post Content</label>
+					<textarea className="form-control" id="content" rows="3"></textarea>
+				</div>
+				<button className="btn btn-primary" onClick={this.createPost}>Make Post</button>
 				<p id="errorMsg" className="bg-danger"/>
 				<div className="row">
 					<div className="col-xs-4">
@@ -114,7 +121,7 @@ class MyLife extends Component {
 							</table>
 						</div>
 					</div>
-					<div className="col-xs-4">
+					<div className="col-xs-8">
 						<h4><b id="currPost"></b></h4>
 						<h4 id="currAuth"/>
 						<p id="currContent" />

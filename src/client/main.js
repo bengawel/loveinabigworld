@@ -13,6 +13,7 @@ import Profile              from './components/profile';
 import Edit                 from './components/edit';
 import MyGoals              from './components/mygoals';
 import MyLife				from './components/mylife';
+import MyFriends			from './components/myfriends';
 import './app.css'
 
 
@@ -46,6 +47,7 @@ class App extends Component {
                 <Route path="/profile/:username/edit" render={props => <Edit user={this.user}/>}/>
                 <Route path="/mygoals" render={props => <MyGoals user={this.user}/>}/>
 				<Route path="/mylife" render={props => <MyLife user={this.user}/>}/>
+				<Route path="/myfriends" render={props => <MyFriends user={this.user}/>}/>
 			</div>
 		</BrowserRouter>;
 
