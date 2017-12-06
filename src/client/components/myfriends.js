@@ -5,15 +5,21 @@ import { Link, withRouter }         from 'react-router-dom';
 
 const Status = ({stat, index, par}) => {
     const url = `/statuses/${stat.id}`;
-	const tblcontent = [<tr key={index}>
-		<th>{stat.title}</th>
-		<th>{stat.user}</th>
-		<th><a onClick={(evt) => par.addComment(stat, evt)}>add a comment</a></th>
-	</tr>, <tr><th/><th><p>{stat.content}</p></th></tr>];
+	const tblcontent = [
+		<div className="panel-heading"><h4 className="panel-title"><b>{stat.title}</b></h4>
+		<h6 className="panel-title">{stat.user}</h6></div>,
+		<div className="panel-body">{stat.content}</div>];
 	stat.comments.forEach(function(commnt) {
-		tblcontent.push(<tr><th/><th>{commnt.username}</th><th><p>{commnt.comm}</p></th></tr>);
+		tblcontent.push(<div className="panel panel-info">
+			<div className="panel-heading"><b>{commnt.username}</b></div>
+			<div className="panel-body">{commnt.comm}</div>
+		</div>);
 	});
-    return <tbody>{tblcontent}</tbody>;
+	tblcontent.push(<div className="row">
+		<div className="col-xs-4"><input className="form-control" id={stat._id} type="text"/></div>
+		<div className="col-xs-4"><button className="btn btn-info" onClick={(evt) => par.addComment(stat, evt)}>Add Comment</button></div>
+	</div>);
+    return <div className="panel panel-primary" key={index}>{tblcontent}</div>;
 };
 
 class MyFriends extends Component {
@@ -21,27 +27,16 @@ class MyFriends extends Component {
         super(props);
         this.state = { statuses: {} };
 		
-		//this.updateDisplay = this.updateDisplay.bind(this);
 		this.createStatus = this.createStatus.bind(this);
 		this.addComment = this.addComment.bind(this);
-		this.getPost = this.getPost.bind(this);
+		//this.getPost = this.getPost.bind(this);
     }
-
-	/*updateDisplay(c, e) {
-		e.preventDefault();
-		let statusEl = document.getElementById('currStatus');
-        statusEl.innerHTML = "Title: " + c.title;
-		let authEl = document.getElementById('currAuth');
-        authEl.innerHTML = "Author: " + c.user;
-		let textEl = document.getElementById('currContent');
-        textEl.innerHTML = c.content;
-	}*/
 	
 	addComment(c, e) {
 		e.preventDefault();
 		const data = {
             usrn:     	 this.props.user.getUser().username,
-            cont:	     document.getElementById('content').value,
+            cont:	     document.getElementById(c._id).value,
         };
 		let $error = $('#errorMsg');
         $.ajax({
@@ -56,8 +51,8 @@ class MyFriends extends Component {
 				repl[this.state.statuses.indexOf(c)] = data.statuses;
 				this.setState({statuses: repl}); // update w response
 				
-				document.getElementById('title').value = "";	// empty input boxes
-				document.getElementById('content').value = "";
+				// empty input boxes
+				document.getElementById(c._id).value = "";
 				console.log(this.state.statuses);
             })
             .fail(err => {
@@ -92,7 +87,7 @@ class MyFriends extends Component {
     }
 	
 	// DEBUG
-	getPost() {
+	/* getPost() {
 		$.ajax({
             url: `/v1/posts`,
             method: "get"
@@ -109,7 +104,7 @@ class MyFriends extends Component {
                 let errorEl = document.getElementById('errorMsg');
                 errorEl.innerHTML = `Error: ${err.error}`;
             });
-	}
+	} */
 	
      componentDidMount() {
         $.ajax({
@@ -130,6 +125,7 @@ class MyFriends extends Component {
 		let stat_list = this.state.statuses.length > 0 ? 
 			this.state.statuses.map((stat, index) => (<Status key={index} stat={stat} index={index} par={this}/>)):
 			[];
+		//stat_list.reverse(); // for "most recent" ordering
         const user = this.props.user.getUser();
         const page_html = user.username !== '' ?
             <div>
@@ -142,18 +138,13 @@ class MyFriends extends Component {
 					<textarea className="form-control" id="content" rows="3"></textarea>
 				</div>
 				<button className="btn btn-primary" onClick={this.createStatus}>Post!</button>
-				<button onClick={this.getPost}>debug</button>
 				<p id="errorMsg" className="bg-danger"/>
 				<div className="row">
 					<div className="col-xs-12">
 						<h4><b>Feed:</b></h4>
-						<div className ="row">
-							<table id="postsTable" className="col-xs-2 table">
-								{stat_list}
-							</table>
-						</div>
 					</div>
 				</div>
+				{stat_list}
             </div>:
             <div>Log in to view this information</div>;
         return <div>

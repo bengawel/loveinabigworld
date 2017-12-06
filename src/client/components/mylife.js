@@ -24,9 +24,9 @@ class MyLife extends Component {
 	updateDisplay(c, e) {
 		e.preventDefault();
 		let postEl = document.getElementById('currPost');
-        postEl.innerHTML = "Title: " + c.title;
+        postEl.innerHTML = c.title;
 		let authEl = document.getElementById('currAuth');
-        authEl.innerHTML = "Author: " + c.user;
+        authEl.innerHTML = "Posted by " + c.user;
 		let textEl = document.getElementById('currContent');
         textEl.innerHTML = c.content;
 	}
@@ -122,9 +122,13 @@ class MyLife extends Component {
 						</div>
 					</div>
 					<div className="col-xs-8">
-						<h4><b id="currPost"></b></h4>
-						<h4 id="currAuth"/>
-						<p id="currContent" />
+						<div className="panel panel-primary">
+							<div className="panel-heading">
+								<h4 className="card-title"><b id="currPost"/></h4>
+							</div>
+							<div className="panel-body mb-2 text-muted"><h6 id="currAuth"/></div>
+							<div className="panel-body" id="currContent" />
+						</div>
 					</div>
 				</div>
             </div>:
