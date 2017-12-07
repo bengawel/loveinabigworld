@@ -14,6 +14,8 @@ import Edit                 from './components/edit';
 import MyGoals              from './components/mygoals';
 import MyLife				from './components/mylife';
 import MyFriends			from './components/myfriends';
+import Goal                 from './components/goal';
+import MyGoal               from './components/mygoal';
 import './app.css'
 
 
@@ -48,6 +50,8 @@ class App extends Component {
                 <Route path="/mygoals" render={props => <MyGoals user={this.user}/>}/>
 				<Route path="/mylife" render={props => <MyLife user={this.user}/>}/>
 				<Route path="/myfriends" render={props => <MyFriends user={this.user}/>}/>
+                <Route exact path="/goal" render={props => <Goal user={this.user}/>}/>
+                <Route path="/goal/:goalid" render={props => <MyGoal user={this.user}/>}/>
 			</div>
 		</BrowserRouter>;
 

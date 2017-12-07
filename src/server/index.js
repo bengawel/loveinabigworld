@@ -47,6 +47,7 @@ mongoose.connect('mongodb://127.0.0.1:27017', options)
             GoalList: require('./models/goals'),
 			Post: require('./models/posts'),
 			Stat: require('./models/statuses'),
+            Goal: require('./models/goals')
         };
 
         // Import our API Routes
@@ -55,6 +56,7 @@ mongoose.connect('mongodb://127.0.0.1:27017', options)
 		require('./api/v1/goals')(app);
 		require('./api/v1/posts')(app);
 		require('./api/v1/statuses')(app);
+        require('./api/v1/goals')(app);
 
         // Give them the SPA base page
         app.get('*', (req, res) => {
