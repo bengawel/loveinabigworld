@@ -75,11 +75,10 @@ class MyGoals extends Component {
                             </table>
                         </div>
                     </div>
-                    <div className="col-xs-1"/>
-                    <div className="col-xs-4">
+                    <div className="col-xs-5">
                         <h4><b>My Current Goal:</b></h4>
                         <div className="row">
-                            <div className="col-xs-2">
+                            <div className="col-xs-5">
                                 <Link to={url}>{this.state.current_goal.title}</Link>
                             </div>
                         </div>

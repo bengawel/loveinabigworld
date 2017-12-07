@@ -88,8 +88,8 @@ class MyGoal extends Component {
                 numOfCompletedTasks = numOfCompletedTasks + 1;
                 return <div key={index}/>;
             } else {
-                return <div key={index}>
-                    <li id={task.description} onClick={this.taskClick}>{task.description}</li>
+                return <div key={index} className="col-xs-8">
+                    <li className="taskList" id={task.description} onClick={this.taskClick}>{task.description}</li>
                     <div id={task.description + index} className={task.description} hidden="hidden">
                         <button onClick={this.completeTask} className="btn btn-default task">Complete Task</button>
                         <button onClick={this.cancelClick} className="btn btn-default task">Cancel</button>
@@ -103,7 +103,7 @@ class MyGoal extends Component {
 
         return <div>
             <div className="row">
-                <div className="col-xs-1">
+                <div className="col-xs-4">
                     <h4><b>{this.state.goal.title}</b></h4>
                 </div>
                 <div className="col-xs-1">

@@ -40,3 +40,23 @@ nav a {
 nav a:visited {
 	color: #FFF;
 }
+
+.taskList {
+	font: 200 20px/1.5 Helvetica, Verdana, sans-serif;
+	border-bottom: 1px solid #ccc;
+	text-decoration: none;
+	color: #000;
+	display: block;
+	cursor: pointer
+}
+
+.taskList:hover {
+	font-size: 22px;
+	background: #f6f6f6;
+}
+
+ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
