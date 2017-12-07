@@ -36,7 +36,6 @@ class MyGoals extends Component {
                 if (current_state !== undefined) {
                     this.setState(current_state);
                 }
-                console.log(this.state.current_goal);
             })
             .fail(err => {
                 let errorEl = document.getElementById('errorMsg');
@@ -45,6 +44,17 @@ class MyGoals extends Component {
     }
 
     render() {
+        let numOfCompletedTasks = 0;
+        if (this.state.current_goal !== ''){
+            this.state.current_goal.tasks.forEach(function(task) {
+                if (task.completed) {
+                    numOfCompletedTasks = numOfCompletedTasks + 1;
+                }
+            });
+        }
+        let goalProgress = <div>
+            <p>You have completed {numOfCompletedTasks} out of 3 tasks!</p>
+        </div>;
         let goals = this.state.goals.map((goal, index) => (
             <Goal key={index} goal={goal} index={index}/>
         ));
@@ -76,6 +86,9 @@ class MyGoals extends Component {
                     </div>
                     <div className="col-xs-4">
                         <h4><b>My Current Goal Progress:</b></h4>
+                        <div className="row">
+                            {goalProgress}
+                        </div>
                     </div>
                 </div>
             </div>:

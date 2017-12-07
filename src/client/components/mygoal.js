@@ -13,6 +13,9 @@ class MyGoal extends Component {
             }
         };
         this.onSubmit = this.onSubmit.bind(this);
+        this.taskClick = this.taskClick.bind(this);
+        this.completeTask = this.completeTask.bind(this);
+        this.cancelClick = this.cancelClick.bind(this);
     }
 
     onSubmit(ev) {
@@ -41,7 +44,62 @@ class MyGoal extends Component {
         })
     }
 
+    taskClick(ev) {
+        ev.preventDefault();
+        let target = ev.target.id;
+        document.getElementsByClassName(target)[0].hidden="";
+
+    }
+
+    completeTask(ev) {
+        ev.preventDefault();
+        let taskid = ev.target.parentNode.classList.value;
+        $.ajax({
+            url: `/v1/goals/mygoal/${this.props.match.params.goalid}/${taskid}`,
+            method: 'put',
+            data: taskid
+        }).then(() => {
+            $.ajax({
+                url:`/v1/goals/mygoal/${this.props.match.params.goalid}`,
+                method: 'get'
+            }).then(data => {
+                this.setState({goal: data.goal});
+                console.log(data.goal.tasks);
+                console.log(this.state.goal.tasks);
+
+            }).fail(err => {
+                console.log(err);
+            })
+        }).fail(err => {
+            console.log(err);
+        })
+    }
+
+    cancelClick(ev) {
+        ev.preventDefault();
+        let target = ev.target;
+        document.getElementById(target.parentNode.id).hidden="hidden";
+    }
+
     render() {
+        let numOfCompletedTasks = 0;
+        let tasks = this.state.goal.tasks.map((task, index) => {
+            if (task.completed) {
+                numOfCompletedTasks = numOfCompletedTasks + 1;
+                return <div key={index}/>;
+            } else {
+                return <div key={index}>
+                    <li id={task.description} onClick={this.taskClick}>{task.description}</li>
+                    <div id={task.description + index} className={task.description} hidden="hidden">
+                        <button onClick={this.completeTask} className="btn btn-default task">Complete Task</button>
+                        <button onClick={this.cancelClick} className="btn btn-default task">Cancel</button>
+                    </div>
+                </div>
+            }
+        });
+        if (numOfCompletedTasks === 3) {
+            tasks = <div><p>You have completed all your tasks!</p></div>
+        }
 
         return <div>
             <div className="row">
@@ -55,6 +113,9 @@ class MyGoal extends Component {
             <div className="row">
                 <div className="col-xs-6">
                     <h4><b>Tasks:</b></h4>
+                    <ul>
+                        {tasks}
+                    </ul>
                 </div>
             </div>
             <div className="row">

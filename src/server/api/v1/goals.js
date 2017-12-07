@@ -54,6 +54,38 @@ module.exports = (app) => {
         }
     });
 
+    app.put('/v1/goals/mygoal/:goalid/:taskid', (req, res) => {
+        if (!req.session.user) {
+            res.status(401).send({ error: 'unauthorized'});
+        } else {
+            app.models.Goal.findById(req.params.goalid)
+                .then(
+                    goal => {
+                        if (!goal) {
+                            res.status(404).send({error: `unknown goal: ${req.params.id}`});
+                        } else {
+                            goal.tasks.forEach(function(task) {
+                                if (task.description === req.params.taskid) {
+                                    task.completed = true;
+                                }
+                            });
+                            goal.save(err => {
+                                if (err) {
+                                    console.log(`Goal.put current save failure: ${err}`);
+                                    res.status(400).send({error: 'failure saving current goal'});
+                                } else {
+                                    res.status(201).end();
+                                }
+                            })
+                        }
+                    }, err => {
+                        console.log(`Goal.put failure: ${err}`);
+                        res.status(404).send({error: `unknown goal: ${req.params.id}`});
+                    }
+                )
+        }
+    });
+
     app.get('/v1/goals/mygoal/:goalid', (req, res) => {
         if (!req.session.user) {
             res.status(401).send({ error: 'unauthorized'});
