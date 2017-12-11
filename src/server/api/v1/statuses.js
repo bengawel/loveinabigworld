@@ -39,23 +39,30 @@ module.exports = (app) => {
 	
 	app.post('/v1/comment/:id', function (req, res) {
         var comment = {"username": req.body.usrn, "comm": req.body.cont};
-		/*app.models.Stat.findByIdAndUpdate(req.params.id, {$push: {comments: comment}}, {new: true}, function(err, sta) {
-			if(err){
-				console.log(err);
-				// Something failed
-				res.status(400).send({error: 'invalid data'});
+		
+		let schema = Joi.object().keys({
+			username:      	Joi.string().allow(''),
+			comm:   	 	Joi.string().allow('')
+        });
+		
+		Joi.validate(req.body, schema, { stripUnknown: true }, (err, data) => {
+            if (err) {
+                const message = err.details[0].message;
+                console.log(`Comment validation failure: ${message}`);
+                res.status(400).send({ error: message });
+            } else {
+		
+				app.models.Stat.findByIdAndUpdate(req.params.id, {$push: {comments: comment}}, {new: true})
+					.then(
+						updated_Status => {
+							res.status(201).send({statuses: updated_Status});
+						}, err => {
+							console.log(err);
+							res.status(500).send({error: 'server error'})
+						}
+					);
 			}
-			res.status(201).send(sta);
-		});*/
-		app.models.Stat.findByIdAndUpdate(req.params.id, {$push: {comments: comment}}, {new: true})
-			.then(
-				updated_Status => {
-					res.status(201).send({statuses: updated_Status});
-				}, err => {
-					console.log(err);
-					res.status(500).send({error: 'server error'})
-				}
-			);
+		});
     });
 	
 	app.get('/v1/statuses', (req, res) => {

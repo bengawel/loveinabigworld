@@ -18,7 +18,9 @@ class MyLife extends Component {
 		
 		this.updateDisplay = this.updateDisplay.bind(this);
 		this.createPost = this.createPost.bind(this);
-		//this.getPost = this.getPost.bind(this);
+		
+		// UNIT TESTING
+		// this.testPost = this.testPost.bind(this);
     }
 
 	updateDisplay(c, e) {
@@ -55,27 +57,96 @@ class MyLife extends Component {
             });
     }
 	
-	// DEBUG
-	/* getPost() {
+	// UNIT TESTS
+	/*testPost() {
+		const data = {
+            title:       "test title",
+            user:     	 "testusername",
+            content:     "test content",
+        };
+		
+        $.ajax({
+			// simple data test
+            url: `/v1/posts`,
+            method: "post",
+            data: data
+        })
+            .then(data => {
+				console.log("Testing simple post [POST] - success");
+                console.log(data.statuses);
+            })
+            .fail(err => {
+                console.log("Testing simple post [POST] - fail");
+				console.log(err.responseJSON.error);
+            });
+			
+		const data_bad1 = {
+            title:       "test title",
+            user:     	 "username_With_Bad_Chars",
+            content:     "test content",
+			comments:	 []
+        };
+		
+        $.ajax({
+			// bad data test
+            url: `/v1/posts`,
+            method: "post",
+            data: data_bad1
+        })
+            .then(data => {
+				console.log("Testing bad post [POST] - fail (should have been an error)");
+                console.log(data.statuses);
+            })
+            .fail(err => {
+                console.log("Testing bad post [POST] - success");
+				console.log(err.responseJSON.error);
+            });
+			
+		const data2 = {
+            title:       "test title",
+            user:     	 "testusername",
+            content:     12,
+			comments:	 []
+        };
+		
+        $.ajax({
+			// alternate data test
+            url: `/v1/posts`,
+            method: "post",
+            data: data2
+        })
+            .then(data => {
+				console.log("Testing alternate post [POST] - success");
+                console.log(data.statuses);
+				
+            })
+            .fail(err => {
+                console.log("Testing alternate post [POST] - fail");
+				console.log(err.error);
+            });	
+			
 		$.ajax({
+			// get data test
             url: `/v1/posts`,
             method: "get"
         })
             .then(data => {
-                this.setState({posts: data.posts});
-				// debug
-				console.log("got posts");
-				console.log(data.posts);
-				console.log(this.state.posts);
+				console.log("Testing post [GET] - success");
+				console.log(data.statuses);
+				
             })
             .fail(err => {
-				console.log("?");
-                let errorEl = document.getElementById('errorMsg');
-                errorEl.innerHTML = `Error: ${err.error}`;
+				console.log("Testing post [GET] - fail");
+				console.log(err.error);
             });
 	} */
 	
+	
      componentDidMount() {
+		 
+		 // UNIT TESTING
+		// this.testPost();
+		 
         $.ajax({
             url: `/v1/posts`,
             method: "get"
